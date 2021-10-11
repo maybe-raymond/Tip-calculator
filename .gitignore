@@ -7,7 +7,10 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+*.keystore.*
+*.jks
 web-build/
+
 
 # macOS
 .DS_Store
