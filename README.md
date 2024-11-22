@@ -14,6 +14,10 @@ A simple and intuitive tip calculator built using React Native. This app helps u
 ---
 ## Video Demo
 
+
+https://github.com/user-attachments/assets/3dfeab66-3406-4e33-9fc3-44863a01df5c
+
+
 ## **Installation and Setup**
 Follow these steps to set up and run the app on your local device:
 
