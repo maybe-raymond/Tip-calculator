@@ -1,6 +1,7 @@
-import { View, Text, TextInput } from "react-native"
-import styles from "../style/styles"
+import { View} from "react-native"
+import { Input} from '@ui-kitten/components';
 import IsNumeric from "../utils/helper"
+import { Header } from "./Basic";
 
 export default function InputBox(props){
     
@@ -12,23 +13,18 @@ export default function InputBox(props){
   
   
     return (
-      <View>
-        <Text style={styles.title}>{props.Title}</Text>
-        <View style={styles.inputContainor}>
-          {props.iconLeft}
-          <TextInput 
+      <>
+      <View style={{marginBottom:25}}>
+        <Header name={props.Title}/>
+        <View >
+          <Input 
             onChangeText={ (e) => checkValue(e) }
-            style={styles.Input}
             placeholder={props.place}  
-            textAlign="right" 
             keyboardType="phone-pad" 
-            defaultValue={props.value}/>
+            textAlign="right" 
+          />
         </View>
       </View>
+    </>
     )
   }
-
-function isNumeric(value: string): [any, any] {
-    throw new Error("Function not implemented.")
-}
-  

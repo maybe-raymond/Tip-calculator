@@ -1,17 +1,24 @@
-import { TextInput, TouchableOpacity, View, Text } from "react-native";
-import styles from "../style/styles";
+import { View } from "react-native";
 import IsNumeric from "../utils/helper";
+import { Input, Button,  List, Divider, ListItem } from '@ui-kitten/components';
+import { Header } from "./Basic";
 
-export default  function TipSelector(props){
+type TipObj = {
+  value: string,
+  key: number
+}
+
+const tipButtonList:TipObj[] = [
+     {value:"5%", key:1},
+     {value:"10%", key:2}, 
+     {value:"15%", key:3}, 
+     {value:"20%", key:4}, 
+     {value:"25%", key:5},
+     {value:"30%", key:6}
+  ]
+ 
+export default function TipSelector(props){
     //it represents all the tip values
- 
-   const buttons = [
-     {value:"5%", key:"1"},
-     {value:"10%", key:"2"}, 
-     {value:"15%", key:"3"}, 
-     {value:"25%", key:"4"}, 
-     {value:"50%", key:"5"}]
- 
    
  
    const setTipValue = (i:string) => {
@@ -32,32 +39,38 @@ export default  function TipSelector(props){
        }
      }
    }
+
+   const renderItemns = ({item}:{item:TipObj}): React.ReactElement =>(
+      <TipButton tip={item} func={setTipValue}/>
+   )
    
    return(
-     <View>
-       <Text style={styles.title}>Select Tip</Text>
-       <View style={styles.buttonContainor}>
-         {
-           buttons.map( i => 
-               < TouchableOpacity>
-                 <Text 
-                   style={styles.button}
-                   onPress={ () => setTipValue(i.value)}
-                   key={i.key}
-                   >
-                   {i.value}</Text>
-               </TouchableOpacity>
-           )
-         }
-          <TouchableOpacity>
-          <TextInput 
-           style={styles.button}
-           placeholder="custom"  
-           placeholderTextColor = 'white'
-           keyboardType="phone-pad" 
-           onChangeText={ (e) => setInput(e)} />
-           </TouchableOpacity>
-       </View>
+     <View style={{marginBottom:25}}>
+      <Header name="Select Tip"/>
+      <List
+        ItemSeparatorComponent={Divider}
+        data={tipButtonList}
+        renderItem={renderItemns}
+      >
+      </List>
+      <Input 
+        placeholder="custom"  
+        keyboardType="phone-pad" 
+        onChangeText={ (e) => setInput(e)} 
+        style={{marginTop:10, textAlign:"right"}}
+        textAlign="right" 
+        />
      </View>
    )
 }
+
+
+const TipButton = ({tip, func}:{tip:TipObj, func:(a:string) => void}):React.ReactElement => (
+    <Button
+      onPress={ () => func(tip.value)}
+      key={tip.key}
+      style={{marginBottom: 10}}
+      > 
+          {tip.value}
+    </Button>
+)

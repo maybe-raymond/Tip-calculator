@@ -1,14 +1,20 @@
-import { Text, View, ScrollView, TextInput} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View, StyleSheet} from "react-native";
 import React, { useState } from "react";
-import { Foundation } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import styles from "./style/styles"; 
 import TotalView from  './components/TotalView'
 import IsNumeric from "./utils/helper";
 import TipSelector from "./components/TipSelector";
 import InputBox from "./components/InputBox";
+import { Input, Text, Layout} from '@ui-kitten/components';
+import { ResetButton, Header } from "./components/Basic";
 
 
+
+
+/*
+TODO LIST
+- Convert card of Tip breakdown to be a list and add some colour to it
+
+*/
 export default function Index() {
 
     const [currentTip, changeTip] = useState<number>(5)
@@ -16,16 +22,23 @@ export default function Index() {
     const [numPeople, changePeople] = useState<number>(1)
   
       return (
-        <ScrollView 
-        style={styles.Main_containor}
-        scrollEnabled={true}>
-           <InputBox Title="Bill" defaultValue="0"  place="$0.00" setValue={changeAmount} iconLeft={<Foundation name="dollar" size={24} color="black" style={styles.InputIcon} />}/>
-           <TipSelector currentTip={currentTip} setValue={changeTip} />
-           <PeopleInput  value="1" place="1" setValue={changePeople} />
-           <TotalView amount ={amount} numPeople={numPeople} tip={currentTip} changeAmount={changeAmount}  changePeople={changePeople}  changeTip={ changeTip}/>
-        </ScrollView>
+         <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
+        >
+      <ScrollView>
+          <Layout style={{flex:1, padding:20}}>
+                 <InputBox Title="Amount" place="$0.00" value="0" setValue={changeAmount}/>
+                 <TipSelector currentTip={currentTip} setValue={changeTip} />
+                  <PeopleInput setValue={changePeople} />
+                  <TotalView amount ={amount} numPeople={numPeople} tip={currentTip} ResetButton = {<ResetButton changeAmount={changeAmount}  changePeople={changePeople} changeTip={changeTip}/>} />
+            </Layout>
+      </ScrollView>
+      </KeyboardAvoidingView>
+
       )
 }
+
 
 
 function PeopleInput(props){
@@ -42,18 +55,13 @@ function PeopleInput(props){
   }
 
   return (
-      <View>
-        <Text style={styles.title}>{"Number of People"}</Text>
-        <View style={styles.inputContainor}>
-          <Ionicons name="people" size={24} color="black" />
-          <TextInput 
+      <View style={{marginBottom: 25}}>
+        <Header name="Number of People"/>
+          <Input 
               onChangeText={ (e) => checkPeopleValue(e) }
-              style={styles.Input}
-              placeholder={props.place}  
+              placeholder="1"  
               textAlign="right" 
-              keyboardType="phone-pad" 
-              defaultValue={props.value}/>
-        </View>
+              keyboardType="phone-pad"/>
     </View>
   )
 }

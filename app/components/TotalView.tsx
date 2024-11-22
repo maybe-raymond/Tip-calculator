@@ -1,22 +1,37 @@
-import { Text, View, TouchableOpacity} from "react-native";
-import styles from "../style/styles";
+import {StyleSheet} from "react-native";
 import IsNumeric from "../utils/helper";
+import {Card, Divider, List , ListItem, Text} from '@ui-kitten/components';
+
+
 
 
 export default function TotalView(props){
     //bottom bar that containts total amount and reset button
   let Tip = totalAmount(props.amount, props.tip)
+  
+  let TipData = [
+    {title: "Tip", value: `${props.tip}%`},
+    {title: "Tip Per Person", value: check(Tip / props.numPeople)},
+    {title: "Total Tip", value:check(Tip)},
+    {title:"Total Bill", value:check(Tip + props.amount)}
+  ]
+
+  const renderItems = ({item}): React.ReactElement => (
+    <ItemView title={item.title} tip={item.value}/>
+  )
             
   return (
-      <View style={styles.TotalContainor}>
-        <TipView  header="Tip %" tip={props.tip}/>
-        <Amount header="Tip Per Person" money="$0.00" total={(Tip / props.numPeople)} />
-        <Amount header="Total Tip"  money="$0.00"  total={Tip} />
-        <Amount header="Total Bill"  money="$0.00"  total={Tip + props.amount} />
-        <ResetButton changeAmount={props.changeAmount}  changePeople={props.changePeople} changeTip={props.changeTip}/>
-      </View>
-  
-    )
+      <Card
+        style={{borderRadius:10}}
+      >
+        <List
+          style={{marginBottom:20}}
+          data={TipData}
+          renderItem={renderItems}
+          ItemSeparatorComponent={Divider}
+        />
+        {props.ResetButton}
+      </Card>    )
   }
   
 
@@ -29,60 +44,24 @@ const totalAmount = (amount: string, tip:number): number => {
     return total
   } 
 
-  
-function Amount(props){
-
-    const check = (value:number): string => {
+const check = (value:number): string => {
       let result = value.toFixed(2)
       if (result) return `${result}` 
-      return "0.00"
-      
-    }
+      return "0.00"  
+}
 
-    const value = check(props.total)
-  
-    return(
-      <View style={styles.AmountConntainor}>
-        <View>
-         <Text style={styles.TipHeader}>{props.header} </Text>
-         <Text style={styles.TipPar}>{props.para}</Text>
-        </View>
-        <Text style={styles.amount}>{value}</Text>
-    </View>
-    )
+const TextRender = ({item}:{item: string|number}): React.ReactElement =>{
+    return <Text category='h6'>{item}</Text>
   }
   
 
 
-
-  function TipView(props){
-  
-    return(
-      <View style={styles.AmountConntainor}>
-        <View>
-         <Text style={styles.TipHeader}>{props.header} </Text>
-         <Text style={styles.TipPar}>{props.para}</Text>
-        </View>
-        <Text style={styles.amount}>{`${props.tip}%`}</Text>
-    </View>
-    )
-  }
-
-
-  
-  function ResetButton (props){
-  
-    const Resetting = () => {
-      props.changeAmount(0) 
-      props.changePeople(1) 
-      props.changeTip(5)
-    }
-  
-    return(
-      <TouchableOpacity>
-        <Text style={styles.reset} onPress={Resetting}>
-          Reset</Text>
-      </TouchableOpacity>
-    )
-  }
-
+const ItemView = ({title, tip}:{title:string, tip:number|string}): React.ReactElement =>(
+    <>
+      <ListItem
+      accessoryLeft={<TextRender item={title} />}
+      accessoryRight={<TextRender item={`${tip}`} />}
+      >
+      </ListItem>
+    </>
+  )

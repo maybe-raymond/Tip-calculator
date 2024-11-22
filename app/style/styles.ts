@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     
-    Main_containor:{
+    Title:{
       backgroundColor: "white",
       height:"70%",
       width:"100%",
