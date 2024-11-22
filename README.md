@@ -38,7 +38,7 @@ npm install
 yarn install
 ```
 
-3. ***Run App**
+3. **Run App**
 ```
 expo start
 ```
